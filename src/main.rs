@@ -20,18 +20,36 @@ fn main()
         {
             if game.make_move(position)
             {
-                if let Some(winner) = game.check_winner()
+                // if let Some(winner) = game.check_winner()
+                // {
+                //     game.display_board();
+                //     println!("Player {} wins!", winner);
+                //     break;
+                // }
+                // else if game.is_draw()
+                // {
+                //     game.display_board();
+                //     println!("It's a draw!");
+                //     break;
+                // }
+                match game.check_winner()
                 {
-                    game.display_board();
-                    println!("Player {} wins!", winner);
-                    break;
-                }
-                else if game.is_draw()
-                {
-                    game.display_board();
-                    println!("It's a draw!");
-                    break;
-                }
+                    Some(winner) => 
+                    {
+                        game.display_board();
+                        println!("{winner} wins!");
+                        break;
+                    },
+                    None => 
+                    {
+                        if game.is_draw()
+                        {
+                            game.display_board();
+                            println!("Draw!");
+                            break;
+                        }
+                    } 
+                };
                 game.next_turn();
             }
         }
