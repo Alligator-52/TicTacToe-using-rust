@@ -1,9 +1,8 @@
 use std::io;
 use std::io::Write;
 
-// todo
-// 1-  add numbers to cells for easy identification
-// 2- add horizontal divisions
+
+
 fn main() 
 {
     let mut game = Game::new();
@@ -52,24 +51,33 @@ enum Player
 struct Game
 {
     board: [char;9],
-    current_player:Player
+    current_player:Player,
+    moves: usize
 }
 
 impl Game 
 {   
-    fn new() -> Game
+    fn new() -> Game 
     {
+        let mut board = [' '; 9];
+        let mut i = 0;
+        while i < 9
+        {
+            board[i] = char::from_digit((i+1) as u32, 10).unwrap();
+            i+=1;
+        }
         Game 
         {
-            board: [' ';9],
-            current_player : Player::X
+            board,
+            current_player: Player::X,
+            moves:0
         }
     }
 
     fn display_board(&self)
     {
         println!(
-            "{0} |{1} |{2}\n__|__|__\n{3} |{4} |{5}\n__|__|__\n{6} |{7} |{8}\n  |  |  ",
+            "{0} |{1} |{2}\n--|--|--\n{3} |{4} |{5}\n--|--|--\n{6} |{7} |{8}",
             self.board[0], self.board[1], self.board[2],
             self.board[3], self.board[4], self.board[5],
             self.board[6], self.board[7], self.board[8]
@@ -84,7 +92,17 @@ impl Game
             return false;
         }
 
-        if self.board[position - 1] != ' '
+        // if match self.board[position-1]  
+        // {
+        //     '1'|'2'|'3'|'4'|'5'|'6'|'7'|'8'|'9' => false,
+        //     _ => true,
+        // }
+        // {
+        //     println!("Invalid Move! The desired cell is already occupied. Choose another cell");
+        //     return false;
+        // }
+
+        if !('1'..='9').contains(&self.board[position-1]) //if self.board[position - 1] != ' '
         {
             println!("Invalid Move! The desired cell is already occupied. Choose another cell");
             return false;
@@ -95,6 +113,7 @@ impl Game
             Player::X => 'X',
             Player::O => 'O'
         };
+        self.moves += 1;
         return true;
         
     }
@@ -121,7 +140,8 @@ impl Game
 
     fn is_draw(&self) -> bool
     {
-        return !self.board.contains(&' ');
+        //return !self.board.contains(&' ');
+        return self.moves == 9;
     }
 
     fn next_turn(&mut self)
