@@ -60,5 +60,39 @@ impl Game
         return true;
         
     }
+
+    fn check_winner(&self) -> Option<char>
+    {
+        let winning_positions = 
+        [
+            [0,1,2], [3,4,5], [6,7,8],
+            [0,3,6], [1,4,7], [2,5,8],
+            [0,4,8], [2,4,6]
+        ];
+
+        for &poistions in winning_positions.iter()
+        {
+            let [a,b,c] = poistions;
+            if self.board[a] != ' ' && self.board[a] == self.board[b] && self.board[a] == self.board[c]
+            {
+                return Some(self.board[a]);
+            }
+        }
+        return None;
+    }
+
+    fn is_draw(&self) -> bool
+    {
+        return !self.board.contains(&' ');
+    }
+
+    fn next_turn(&mut self)
+    {
+        self.current_player = match self.current_player 
+        {
+            Player::X => Player::O,
+            Player::O => Player::X
+        };
+    }
 }
 
