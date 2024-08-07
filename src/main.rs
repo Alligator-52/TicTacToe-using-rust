@@ -3,9 +3,44 @@ use std::io::Write;
 
 fn main() 
 {
-    
+    let mut game = Game::new();
+    let mut input = String::new();
+
+    loop
+    {
+        game.display_board();
+        print!("Player {:?}, enter your move (1-9): ", game.current_player);
+        io::stdout().flush().unwrap();
+        input.clear();
+        io::stdin().read_line(&mut input).expect("Failed to read input");
+
+        if let Ok(position) = input.trim().parse::<usize>()
+        {
+            if game.make_move(position)
+            {
+                if let Some(winner) = game.check_winner()
+                {
+                    game.display_board();
+                    println!("Player {} wins!", winner);
+                    break;
+                }
+                else if game.is_draw()
+                {
+                    game.display_board();
+                    println!("It's a draw!");
+                    break;
+                }
+                game.next_turn();
+            }
+        }
+        else
+        {
+            println!("Invalid input. Please enter a number between 1 and 9.");
+        }
+    }
 }
 
+#[derive(PartialEq)]
 enum Player
 {
     X,O
@@ -31,7 +66,7 @@ impl Game
     fn display_board(&self)
     {
         println!(
-            "{0}|{1}|{2}\n{3}|{4}|{5}\n{6}|{7}|{8}",
+            "{0}|{1}|{2}\n---|---|---{3}|{4}|{5}\n---|---|---{6}|{7}|{8}",
             self.board[0], self.board[1], self.board[2],
             self.board[3], self.board[4], self.board[5],
             self.board[6], self.board[7], self.board[8]
