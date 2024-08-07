@@ -40,7 +40,7 @@ fn main()
     }
 }
 
-#[derive(PartialEq)]
+#[derive(PartialEq, Debug)]
 enum Player
 {
     X,O
@@ -66,7 +66,7 @@ impl Game
     fn display_board(&self)
     {
         println!(
-            "{0}|{1}|{2}\n---|---|---{3}|{4}|{5}\n---|---|---{6}|{7}|{8}",
+            "{0}|{1}|{2}\n{3}|{4}|{5}\n{6}|{7}|{8}",
             self.board[0], self.board[1], self.board[2],
             self.board[3], self.board[4], self.board[5],
             self.board[6], self.board[7], self.board[8]
@@ -105,9 +105,9 @@ impl Game
             [0,4,8], [2,4,6]
         ];
 
-        for &poistions in winning_positions.iter()
+        for &positions in winning_positions.iter()
         {
-            let [a,b,c] = poistions;
+            let [a,b,c] = positions;
             if self.board[a] != ' ' && self.board[a] == self.board[b] && self.board[a] == self.board[c]
             {
                 return Some(self.board[a]);
