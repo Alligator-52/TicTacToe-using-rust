@@ -1,6 +1,9 @@
 use std::io;
 use std::io::Write;
 
+// todo
+// 1-  add numbers to cells for easy identification
+// 2- add horizontal divisions
 fn main() 
 {
     let mut game = Game::new();
